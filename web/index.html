@@ -1,0 +1,394 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="only light">
+<title>Budget OPCO · Cizel</title>
+<meta name="description" content="Estimez en quelques secondes le budget formation que l'OPCO d'une entreprise peut financer, à partir de son nom, de son SIREN ou de son site web. Données publiques officielles, sources affichées.">
+<meta property="og:title" content="Budget OPCO · Cizel">
+<meta property="og:description" content="Le budget formation que l'OPCO d'une entreprise peut financer, estimé à partir de données publiques officielles.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M0 0 H24 L32 8 V32 H0 Z' fill='%231B2837'/%3E%3Cpath d='M24 0 L32 8 H24 Z' fill='%23CDE3E5'/%3E%3Cpath d='M22.89 14.78 A7 7 0 1 1 17.22 9.11' fill='none' stroke='%23F5F3ED' stroke-width='5'/%3E%3C/svg%3E">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700&family=Instrument+Sans:wght@400;500;600&family=Spline+Sans+Mono:wght@400;500&display=swap');
+:root{
+  color-scheme:only light;
+  --sable:#F5F3ED;--encre:#1B2837;--bleu-vert:#0E6B7A;--bleu-vert-clair:#CDE3E5;
+  --bordeaux:#5E1C27;--rose:#F3E6E7;--valide:#1E7A5A;--carte:#FFFFFF;--trait:#E3DFD4;--gris:#5A6673;
+  --fd:'Bricolage Grotesque','Segoe UI',sans-serif;--fb:'Instrument Sans','Helvetica Neue',Arial,sans-serif;
+  --fm:'Spline Sans Mono',ui-monospace,Menlo,monospace;--cut:16px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{background:#F5F3ED}
+body{background:var(--sable);color:var(--encre);font-family:var(--fb);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:var(--fd);letter-spacing:-.02em;line-height:1.15;text-wrap:balance}
+h1{font-size:clamp(2.1rem,5vw,3.4rem);font-weight:700}
+h2{font-size:1.8rem;font-weight:600}
+h3{font-size:1.12rem;font-weight:600}
+.label{font-size:.74rem;text-transform:uppercase;letter-spacing:.1em;font-weight:600;color:var(--bleu-vert)}
+.label--bordeaux{color:var(--bordeaux)}
+.label--gris{color:var(--gris)}
+.data{font-family:var(--fm);font-variant-numeric:tabular-nums}
+a{color:var(--bleu-vert);text-decoration:none}
+a:hover{text-decoration:underline}
+.container{max-width:1000px;margin:0 auto;padding-inline:24px}
+section{padding-block:72px}
+.mark{width:30px;height:30px;flex:none;display:block}
+.brand{display:flex;align-items:center;gap:10px;font-family:var(--fd);font-weight:700;letter-spacing:-.02em;color:var(--encre);font-size:1.15rem}
+header .container{display:flex;justify-content:space-between;align-items:center;padding-block:24px;gap:16px}
+header nav a{font-size:.95rem}
+.lead{color:var(--gris);font-size:1.1rem;max-width:640px;margin-top:16px}
+
+/* Recherche */
+form.recherche{margin-top:40px;display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end}
+form.recherche .champ{flex:1 1 320px}
+label{display:block;margin-bottom:6px;font-weight:500}
+input{width:100%;background:var(--carte);border:1px solid var(--trait);padding:13px 14px;font-family:var(--fb);font-size:1rem;color:var(--encre);border-radius:0}
+input:focus{border-color:var(--bleu-vert);outline:2px solid rgba(14,107,122,.25)}
+.aide{font-size:.88rem;color:var(--gris);margin-top:8px}
+.btn{display:inline-block;font-family:var(--fb);font-weight:500;font-size:1rem;padding:14px 28px;border:none;cursor:pointer;
+  clip-path:polygon(0 0,calc(100% - var(--cut)) 0,100% var(--cut),100% 100%,0 100%);transition:background .2s ease,clip-path .2s ease}
+.btn-primaire{background:var(--encre);color:var(--sable)}
+.btn-primaire:hover{background:var(--bleu-vert);--cut:22px}
+.btn-primaire:disabled{opacity:.6;cursor:wait}
+.exemples{margin-top:14px;font-size:.9rem;color:var(--gris)}
+.exemples button{background:none;border:none;border-bottom:1px solid var(--trait);color:var(--bleu-vert);font:inherit;cursor:pointer;margin-left:6px;min-height:44px;padding-inline:4px}
+.exemples button:hover{border-color:var(--bleu-vert)}
+
+/* États */
+#etat{margin-top:32px}
+.message{padding:16px 20px;background:var(--carte);border:1px solid var(--trait)}
+.message strong{display:block;margin-bottom:4px}
+.candidats{list-style:none;margin-top:16px;border-top:1px solid var(--trait)}
+.candidats button{width:100%;text-align:left;background:var(--carte);border:none;border-bottom:1px solid var(--trait);padding:14px 16px;cursor:pointer;font:inherit;color:var(--encre);display:grid;grid-template-columns:1fr auto;gap:4px 16px}
+.candidats button:hover{background:#FBFAF6}
+.candidats .meta{grid-column:1/-1;color:var(--gris);font-size:.88rem}
+.candidats .siren{font-family:var(--fm);color:var(--gris);font-size:.88rem}
+
+/* Résultat */
+.resultat{background:var(--carte);border:1px solid var(--trait);border-top:3px solid var(--bordeaux);padding:32px;
+  clip-path:polygon(0 0,calc(100% - var(--cut)) 0,100% var(--cut),100% 100%,0 100%)}
+.resultat-tete{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:baseline}
+.badge{font-family:var(--fm);font-size:.8rem;padding:4px 10px;border:1px solid var(--trait);color:var(--gris);white-space:nowrap}
+.budget{margin-top:28px;display:grid;grid-template-columns:auto 1fr;gap:8px 32px;align-items:end}
+.budget-valeur{font-family:var(--fd);font-weight:700;font-size:clamp(2.6rem,7vw,3.8rem);line-height:1;color:var(--bordeaux)}
+.budget-legende{font-family:var(--fm);font-size:.85rem;color:var(--gris)}
+.faits{margin-top:28px;display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));border-top:1px solid var(--trait)}
+.fait{padding:14px 16px 14px 0;border-bottom:1px solid var(--trait)}
+.fait .label{display:block;margin-bottom:2px}
+.fait .v{font-family:var(--fm);font-size:.95rem}
+.alerte{margin-top:24px;background:var(--rose);border-block:1px solid var(--trait);padding:14px 18px;font-size:.95rem}
+.alerte b{color:var(--bordeaux)}
+.bloc{margin-top:32px}
+.bloc h3{margin-bottom:12px}
+ul.liste{padding-left:20px}
+ul.liste li{margin-bottom:6px}
+.calc{display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:460px}
+table{width:100%;border-collapse:collapse;margin-top:16px;max-width:560px}
+th{font-size:.74rem;text-transform:uppercase;letter-spacing:.09em;color:var(--gris);font-weight:600;text-align:left;padding:10px 16px 10px 0;border-bottom:1px solid var(--trait)}
+td{padding:12px 16px 12px 0;border-bottom:1px solid var(--trait)}
+td.montant{font-family:var(--fm);text-align:right;color:var(--bordeaux);font-variant-numeric:tabular-nums;white-space:nowrap}
+tr.total td{font-weight:600}
+.sources{font-size:.88rem;color:var(--gris)}
+.sources li{margin-bottom:4px;word-break:break-word}
+.cta-agent{margin-top:16px;font-family:var(--fm);background:var(--sable);border:1px solid var(--trait);padding:10px 14px;display:inline-block}
+
+/* Bande « comment ça marche » */
+.band-encre{background:var(--encre);color:var(--sable)}
+.band-encre .label{color:var(--bleu-vert-clair)}
+.band-encre a{color:var(--bleu-vert-clair);text-decoration:underline}
+.etapes{list-style:none;margin-top:40px;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:32px}
+.pastille{font-family:var(--fm);font-weight:500;width:40px;height:40px;display:inline-flex;align-items:center;justify-content:center;background:var(--bleu-vert-clair);color:var(--encre);margin-bottom:14px}
+.etapes p{color:var(--sable);opacity:.86;font-size:.95rem}
+.etapes code{font-family:var(--fm);font-size:.85rem;color:var(--bleu-vert-clair)}
+.principe{margin-top:48px;font-family:var(--fd);font-size:1.3rem;font-weight:600}
+footer{padding-block:40px;color:var(--gris);font-size:.9rem}
+footer .container{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+:focus-visible{outline:2px solid var(--bleu-vert);outline-offset:2px}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+@media(max-width:480px){
+  section{padding-block:48px}
+  .resultat{padding:22px}
+  .budget{grid-template-columns:1fr}
+  .calc{grid-template-columns:1fr}
+  form.recherche .btn{width:100%}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="container">
+    <span class="brand">
+      <svg class="mark" viewBox="0 0 32 32" role="img" aria-label="Cizel">
+        <path d="M0 0 H24 L32 8 V32 H0 Z" fill="#1B2837"></path>
+        <path d="M24 0 L32 8 H24 Z" fill="#CDE3E5"></path>
+        <path d="M22.89 14.78 A7 7 0 1 1 17.22 9.11" fill="none" stroke="#F5F3ED" stroke-width="5"></path>
+      </svg>
+      Cizel
+    </span>
+    <nav><a href="#comment">Comment ça marche</a></nav>
+  </div>
+</header>
+
+<main>
+<section style="padding-top:40px">
+  <div class="container">
+    <p class="label label--bordeaux">Financement de la formation</p>
+    <h1 style="margin-top:12px">Combien l'OPCO de votre entreprise peut-il financer&nbsp;?</h1>
+    <p class="lead">Entrez le nom, le SIREN ou le site web d'une entreprise. Vous obtenez son OPCO officiel et le budget formation qu'il prend en charge cette année, avec chaque source.</p>
+
+    <form class="recherche" id="form" autocomplete="off">
+      <div class="champ">
+        <label for="q">Entreprise</label>
+        <input id="q" name="q" required minlength="2" placeholder="ex. One Learn, 915335756 ou competences-savoir.fr">
+      </div>
+      <button class="btn btn-primaire" id="go" type="submit">Estimer le budget OPCO</button>
+    </form>
+    <p class="exemples">Essayer :
+      <button type="button" data-q="909866493">One Learn</button>
+      <button type="button" data-q="competences-savoir.fr">competences-savoir.fr</button>
+      <button type="button" data-q="493915920">Pelenitse</button>
+    </p>
+
+    <div id="etat" aria-live="polite"></div>
+  </div>
+</section>
+
+<section class="band-encre" id="comment">
+  <div class="container">
+    <p class="label">Sous le capot</p>
+    <h2 style="margin-top:12px">Un agent Claude Code, une interface sans serveur</h2>
+    <ol class="etapes">
+      <li><span class="pastille">01</span><h3>Identifier</h3><p>Nom, SIREN ou site web vers l'entreprise, son effectif et sa convention collective, via l'API Recherche d'entreprises.</p></li>
+      <li><span class="pastille">02</span><h3>Trouver l'OPCO</h3><p>Lecture de la table officielle SIRET-OPCO de France compétences. Aucune déduction : l'OPCO est celui déclaré.</p></li>
+      <li><span class="pastille">03</span><h3>Lire le barème</h3><p>Un sous-agent Claude cherche les critères de l'OPCO pour la branche et l'année, et cite chaque montant. Commande <code>/budget-opco</code>.</p></li>
+      <li><span class="pastille">04</span><h3>Calculer et vérifier</h3><p>Le calcul est fait par du code, jamais par le modèle. Un hook refuse toute fiche qui contient un montant sans source.</p></li>
+    </ol>
+    <p class="principe">Le modèle orchestre et interprète. Le code calcule. Le hook vérifie.</p>
+    <p style="margin-top:20px"><a href="https://github.com/by-nuij/budget-opco">Voir le code source sur GitHub</a></p>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="container">
+    <span>Vincent Duchemin · Cizel · <a href="https://cizel.ai/">cizel.ai</a></span>
+    <span>Estimation indicative. Seul l'OPCO décide de la prise en charge.</span>
+  </div>
+</footer>
+
+<script>
+/* Même logique que scripts/entreprise.py et scripts/calcul.py, portée côté navigateur.
+   Les barèmes viennent de web/baremes.json, généré depuis data/baremes/ par scripts/exporter_baremes.py. */
+const API_ENTREPRISES = "https://recherche-entreprises.api.gouv.fr/search";
+const API_SIRO = "https://tabular-api.data.gouv.fr/api/resources/b2452a3d-7786-4a26-99c3-0389fbb3763e/data/";
+const PAGE_SIRO = "https://www.data.gouv.fr/datasets/table-siret-opco";
+const ANNEE = new Date().getFullYear();
+
+// Tranches d'effectif INSEE : code -> [libellé, borne haute] (voir TRANCHES dans scripts/entreprise.py)
+const TRANCHES = {NN:["non employeuse",0],"00":["0 salarié",0],"01":["1 ou 2 salariés",2],"02":["3 à 5 salariés",5],"03":["6 à 9 salariés",9],
+  "11":["10 à 19 salariés",19],"12":["20 à 49 salariés",49],"21":["50 à 99 salariés",99],"22":["100 à 199 salariés",199],"31":["200 à 249 salariés",249],
+  "32":["250 à 499 salariés",499],"41":["500 à 999 salariés",999],"42":["1 000 à 1 999 salariés",1999],"51":["2 000 à 4 999 salariés",4999],
+  "52":["5 000 à 9 999 salariés",9999],"53":["10 000 salariés et plus",1e9]};
+
+const $ = s => document.querySelector(s);
+const etat = $("#etat");
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const euros = n => n == null ? "non publié" : n.toLocaleString("fr-FR", {maximumFractionDigits: 2}) + " € HT";
+let baremes = [];
+
+function tranche(code) {
+  const [libelle, borne] = TRANCHES[code] || ["inconnue", null];
+  const segment = borne == null ? "inconnu" : borne < 11 ? "moins de 11 salariés" : borne < 50 ? "11 à 49 salariés" : "50 salariés et plus";
+  return {code, libelle, segment};
+}
+
+async function getJSON(url, params) {
+  const r = await fetch(url + "?" + new URLSearchParams(params));
+  if (!r.ok) throw new Error(`Service indisponible (${r.status})`);
+  return r.json();
+}
+
+// Un site web devient des mots-clés : https://www.competences-savoir.fr/ -> "competences savoir"
+function analyserEntree(brut) {
+  const s = brut.trim();
+  const chiffres = s.replace(/\s/g, "");
+  if (/^\d{9}$/.test(chiffres)) return {type: "siren", valeur: chiffres};
+  if (/^\d{14}$/.test(chiffres)) return {type: "siren", valeur: chiffres.slice(0, 9)};
+  const domaine = s.match(/^(?:https?:\/\/)?(?:www\.)?([a-z0-9-]+(?:\.[a-z0-9-]+)*)\.[a-z]{2,}(?:\/.*)?$/i);
+  if (domaine) return {type: "site", valeur: domaine[1].split(".").pop().replace(/-/g, " "), domaine: s};
+  return {type: "nom", valeur: s};
+}
+
+// "Competences et Savoir" ressemble à competences-savoir.fr : on compare les noms sans accents ni mots outils
+const compact = s => s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase()
+  .replace(/\([^)]*\)/g, " ").split(/[^a-z0-9]+/).filter(m => m && !["et","de","du","des","la","le","les","l","d"].includes(m)).join("");
+function trierParDomaine(res, motsDomaine) {
+  const cible = compact(motsDomaine);
+  const score = e => { const n = compact(e.nom_complet); return n === cible ? 0 : n.startsWith(cible) || cible.startsWith(n) ? 1 : 2; };
+  return res.map((e, i) => [score(e), i, e]).sort((a, b) => a[0] - b[0] || a[1] - b[1]).map(x => x[2]);
+}
+
+function message(titre, texte) {
+  etat.innerHTML = `<div class="message"><strong>${esc(titre)}</strong>${texte}</div>`;
+}
+
+async function rechercher(brut) {
+  const entree = analyserEntree(brut);
+  $("#go").disabled = true;
+  message("Recherche en cours", "Interrogation des registres publics.");
+  try {
+    const data = await getJSON(API_ENTREPRISES, {q: entree.valeur, per_page: entree.type === "site" ? 10 : 6, etat_administratif: "A"});
+    let res = (data.results || []).filter(e => entree.type !== "siren" || e.siren === entree.valeur);
+    if (entree.type === "site") res = trierParDomaine(res, entree.valeur).slice(0, 6);
+    if (!res.length) {
+      message("Aucune entreprise trouvée", entree.type === "site"
+        ? " Le nom de domaine ne correspond pas à une raison sociale. Cherchez le nom indiqué dans les mentions légales du site, ou lancez <code>/budget-opco</code> dans Claude Code : l'agent lit les mentions légales lui-même."
+        : " Vérifiez l'orthographe ou essayez le SIREN.");
+      return;
+    }
+    if (res.length === 1 || entree.type === "siren") return afficherFiche(res[0], entree);
+    afficherCandidats(res, entree);
+  } catch (e) {
+    message("Service public momentanément indisponible", " " + esc(e.message) + ". Réessayez dans un instant.");
+  } finally {
+    $("#go").disabled = false;
+  }
+}
+
+function afficherCandidats(res, entree) {
+  const note = entree.type === "site"
+    ? `<p class="aide">Recherche à partir du domaine <b>${esc(entree.domaine)}</b> : choisissez l'entreprise qui édite le site (voir ses mentions légales).</p>` : "";
+  etat.innerHTML = `<div class="message"><strong>${res.length} entreprises correspondent. Laquelle&nbsp;?</strong>${note}
+    <ul class="candidats">${res.map((e, i) => `<li><button type="button" data-i="${i}">
+      <span>${esc(e.nom_complet)}</span><span class="siren">${esc(e.siren)}</span>
+      <span class="meta">${esc(e.siege?.libelle_commune || "")} · ${esc(tranche(e.tranche_effectif_salarie).libelle)} · NAF ${esc(e.activite_principale)}</span>
+    </button></li>`).join("")}</ul></div>`;
+  etat.querySelectorAll(".candidats button").forEach(b => b.addEventListener("click", () => afficherFiche(res[+b.dataset.i], entree)));
+}
+
+function choisirBareme(opco, idccs) {
+  // Clé du cache : OPCO + IDCC (les critères dépendent de la branche), année la plus récente
+  return baremes.filter(b => b.opco === opco && idccs.includes(String(b.idcc)) && b.annee <= ANNEE)
+                .sort((a, b) => b.annee - a.annee)[0] || null;
+}
+
+// Même règle que calculer() dans scripts/calcul.py
+function calculerBudget(segment, regle) {
+  if (!regle) return {budget: null};
+  const annuel = regle.plafond_annuel_entreprise_ht, action = regle.plafond_par_action_ht;
+  if (annuel != null) return {budget: annuel, base: "plafond annuel entreprise"};
+  if (action != null) return {budget: action, base: "plafond par action de formation"};
+  return {budget: null, base: null};
+}
+
+// Même règle que reste_a_charge() dans scripts/calcul.py : min(prix, budget, coût horaire × heures)
+function resteACharge(budget, horaire, prix, heures) {
+  const plafonds = {"prix de la formation": prix};
+  if (budget != null) plafonds["budget OPCO"] = budget;
+  if (horaire != null && heures) plafonds["coût horaire max × heures"] = horaire * heures;
+  const limitant = Object.keys(plafonds).reduce((a, b) => plafonds[a] <= plafonds[b] ? a : b);
+  const prise = plafonds[limitant];
+  return {prise, reste: prix - prise, limitant};
+}
+
+async function afficherFiche(e, entree) {
+  message("Recherche de l'OPCO", " Lecture de la table SIRET-OPCO de France compétences.");
+  let etabs = [];
+  try {
+    const siro = await getJSON(API_SIRO, {SIRET__contains: e.siren, page_size: 50});
+    etabs = (siro.data || []).filter(l => l.SIRET.startsWith(e.siren));
+  } catch (err) {
+    return message("Table des OPCO indisponible", " " + esc(err.message) + ". Réessayez dans un instant.");
+  }
+  await chargementBaremes;
+  const siege = e.siege || {};
+  const opcos = [...new Set(etabs.map(x => x.OPCO_PROPRIETAIRE).filter(Boolean))];
+  const opco = (etabs.find(x => x.SIRET === siege.siret) || {}).OPCO_PROPRIETAIRE || (opcos.length === 1 ? opcos[0] : null);
+  const idccs = (siege.liste_idcc && siege.liste_idcc.length ? siege.liste_idcc : [...new Set(etabs.map(x => x.IDCC).filter(Boolean))]).map(String);
+  const eff = tranche(e.tranche_effectif_salarie);
+  const bareme = opco ? choisirBareme(opco, idccs) : null;
+  const regle = bareme ? (bareme.regles || []).find(r => r.segment === eff.segment) : null;
+  const {budget, base} = eff.segment === "50 salariés et plus" ? {budget: null} : calculerBudget(eff.segment, regle);
+
+  const alertes = [];
+  if (bareme?.fonds_epuises)
+    alertes.push("<b>Fonds de la branche signalés comme épuisés ou suspendus.</b> Le budget réellement mobilisable peut être nul : à confirmer auprès de l'OPCO.");
+  if (eff.code === "NN" || eff.code === "00" || eff.segment === "inconnu")
+    alertes.push("<b>Effectif nul ou inconnu à l'INSEE.</b> Un dirigeant non salarié relève du fonds d'assurance formation de sa profession, pas de l'OPCO.");
+  if (budget != null) alertes.push("Ce budget est partagé entre toutes les formations de l'entreprise sur l'année : il a peut-être déjà été en partie consommé.");
+
+  let corps;
+  if (!opco) {
+    corps = `<div class="alerte">${opcos.length > 1 ? `<b>Plusieurs OPCO</b> pour cette entreprise (${esc(opcos.join(", "))}).` : "<b>OPCO non trouvé</b> dans la table officielle : l'entreprise n'a peut-être pas de salarié déclaré."}</div>`;
+  } else if (eff.segment === "50 salariés et plus") {
+    corps = `<div class="alerte"><b>Au-delà de 49 salariés, l'OPCO ne finance plus le plan de développement des compétences sur les fonds légaux.</b></div>
+      <div class="bloc"><h3>Pistes de financement</h3><ul class="liste"><li>Fonds conventionnels ou versements volontaires auprès de ${esc(opco)}</li><li>Pro-A (reconversion ou promotion par alternance)</li><li>Budget formation interne de l'entreprise</li></ul></div>`;
+  } else if (!bareme || !regle) {
+    corps = `<div class="message" style="margin-top:24px"><strong>Barème ${esc(opco)} pour cette branche (IDCC ${esc(idccs.join(", ") || "inconnu")}) pas encore constitué.</strong>
+      L'agent Claude Code le recherche et le source en une à deux minutes :<br><span class="cta-agent">/budget-opco ${esc(e.siren)}</span></div>`;
+  } else {
+    corps = `
+      <div class="budget">
+        <div class="budget-valeur data">${budget != null ? budget.toLocaleString("fr-FR") + " €" : "n.c."}</div>
+        <div class="budget-legende">HT par an · ${esc(base || "aucun plafond en euros publié")}<br>Barème ${esc(bareme.opco)} ${esc(bareme.annee)} · IDCC ${esc(bareme.idcc)}</div>
+      </div>
+      ${alertes.map(a => `<div class="alerte">${a}</div>`).join("")}
+      <div class="bloc">
+        <h3>Reste à charge pour une formation</h3>
+        <div class="calc">
+          <div><label for="prix">Prix HT total (€)</label><input id="prix" type="number" min="0" step="50" inputmode="decimal"></div>
+          <div><label for="heures">Durée (heures)</label><input id="heures" type="number" min="0" step="1" inputmode="numeric"></div>
+        </div>
+        <p class="aide">Facultatif. Coût horaire maximum de l'OPCO : ${esc(euros(regle.cout_horaire_max_ht))}${regle.cout_horaire_max_ht && budget ? ` · environ ${Math.floor(budget / regle.cout_horaire_max_ht)} h finançables` : ""}.</p>
+        <div id="rac"></div>
+      </div>
+      ${(regle.conditions || []).length ? `<div class="bloc"><h3>Conditions</h3><ul class="liste">${regle.conditions.map(c => `<li>${esc(c)}</li>`).join("")}</ul></div>` : ""}`;
+  }
+
+  const sources = [
+    `<li>Entreprise : <a href="https://annuaire-entreprises.data.gouv.fr/entreprise/${esc(e.siren)}" target="_blank" rel="noopener">Annuaire des entreprises</a></li>`,
+    `<li>OPCO : <a href="${PAGE_SIRO}" target="_blank" rel="noopener">Table SIRET-OPCO, France compétences</a></li>`,
+    ...(bareme ? (bareme.sources || []).map(s => `<li>Barème : <a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.titre || s.url)}</a>, consulté le ${esc(bareme.date_consultation)}</li>`) : []),
+  ];
+
+  etat.innerHTML = `
+    <article class="resultat">
+      <div class="resultat-tete">
+        <div><p class="label label--bordeaux">Budget OPCO estimé</p><h2 style="margin-top:6px">${esc(e.nom_complet)}</h2></div>
+        ${bareme ? `<span class="badge">confiance ${esc(bareme.confiance)}</span>` : ""}
+      </div>
+      <div class="faits">
+        <div class="fait"><span class="label label--gris">OPCO</span><span class="v">${esc(opco || "non trouvé")}</span></div>
+        <div class="fait"><span class="label label--gris">Effectif</span><span class="v">${esc(eff.libelle)}${e.siege?.annee_tranche_effectif_salarie ? " (" + esc(e.siege.annee_tranche_effectif_salarie) + ")" : ""}</span></div>
+        <div class="fait"><span class="label label--gris">Convention</span><span class="v">IDCC ${esc(idccs.join(", ") || "n.c.")}</span></div>
+        <div class="fait"><span class="label label--gris">SIREN</span><span class="v">${esc(e.siren)}</span></div>
+      </div>
+      ${corps}
+      <div class="bloc"><h3>Sources</h3><ul class="liste sources">${sources.join("")}</ul></div>
+    </article>`;
+
+  if (regle) {
+    const maj = () => {
+      const prix = parseFloat($("#prix").value), heures = parseFloat($("#heures").value);
+      if (!(prix > 0)) return $("#rac").innerHTML = "";
+      const r = resteACharge(budget, regle.cout_horaire_max_ht, prix, heures > 0 ? heures : null);
+      $("#rac").innerHTML = `<table><thead><tr><th></th><th style="text-align:right">Montant HT</th></tr></thead><tbody>
+        <tr><td>Prix de la formation</td><td class="montant">${euros(prix)}</td></tr>
+        <tr><td>Prise en charge OPCO estimée</td><td class="montant">${euros(r.prise)}</td></tr>
+        <tr class="total"><td>Reste à charge</td><td class="montant">${euros(r.reste)}</td></tr></tbody></table>
+        <p class="aide">Facteur limitant : ${esc(r.limitant)}.</p>`;
+    };
+    $("#prix").addEventListener("input", maj);
+    $("#heures").addEventListener("input", maj);
+  }
+}
+
+$("#form").addEventListener("submit", ev => { ev.preventDefault(); rechercher($("#q").value); });
+document.querySelectorAll(".exemples button").forEach(b => b.addEventListener("click", () => { $("#q").value = b.dataset.q; rechercher(b.dataset.q); }));
+const chargementBaremes = fetch("baremes.json").then(r => r.json()).then(b => baremes = b).catch(() => baremes = []);
+</script>
+</body>
+</html>

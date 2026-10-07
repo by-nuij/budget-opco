@@ -1,0 +1,46 @@
+{
+  "opco": "ATLAS",
+  "annee": 2026,
+  "annee_effective_du_bareme": 2026,
+  "idcc": "1486",
+  "date_consultation": "2026-10-07",
+  "confiance": "moyenne",
+  "fonds_epuises": false,
+  "regles": [
+    {
+      "segment": "moins de 11 salariés",
+      "cout_horaire_max_ht": null,
+      "plafond_par_action_ht": null,
+      "plafond_annuel_entreprise_ht": 2500,
+      "prise_en_charge_salaires": null,
+      "conditions": [
+        "Organisme de formation certifié Qualiopi avec NDA valide (conditions générales ATLAS, source tierce)",
+        "Demande déposée avant le début de la formation (source tierce)",
+        "Exclusions : permis de conduire, anglais, reste à charge CPF"
+      ],
+      "source": 1
+    },
+    {
+      "segment": "11 à 49 salariés",
+      "cout_horaire_max_ht": null,
+      "plafond_par_action_ht": null,
+      "plafond_annuel_entreprise_ht": 3000,
+      "prise_en_charge_salaires": null,
+      "conditions": [
+        "Organisme de formation certifié Qualiopi avec NDA valide (conditions générales ATLAS, source tierce)",
+        "Demande déposée avant le début de la formation (source tierce)",
+        "Exclusions : permis de conduire, anglais, reste à charge CPF"
+      ],
+      "source": 1
+    }
+  ],
+  "sources": [
+    {
+      "id": 1,
+      "url": "https://www.opco-atlas.fr/criteres-financement/bureaux-detudes-techniques-ingenieurs-et-conseils",
+      "titre": "Bureaux d'études techniques ingénieurs et conseils - Critères de financement (site officiel ATLAS)",
+      "extrait": "PDC : moins de 11 salariés 2 500 € HT/an ; 11 à 49 salariés 3 000 € HT/an (reformulation du résultat de recherche ; le contenu de la page est chargé dynamiquement et n'a pas pu être lu directement)"
+    }
+  ],
+  "remarques": "Plafonds annuels issus du résultat de recherche sur la page officielle ATLAS de la branche BETIC (IDCC 1486), non relus en direct (page dynamique, WebFetch et curl n'ont renvoyé que la navigation) : confiance moyenne. Non trouvés : coût horaire max HT, plafond par action, prise en charge des salaires. Des sources tierces mentionnent aussi AFEST à 40 EUR HT/h (max 150 h) et un bonus transition écologique, non retenus faute de lecture directe. Aucune mention de fonds épuisés/suspendus relevée. Critères applicables à partir du 1er janvier 2026 sous réserve de fonds disponibles (source tierce). Vérification manuelle du 2026-10-07 : la page officielle exige d'activer un profil (cookies) et redirige vers une page générique ; aucun document ATLAS 2026 lisible trouvé (seuls des barèmes 2021 DROM sont publics). Montants non confirmés : à vérifier dans l'espace adhérent avant tout engagement."
+}

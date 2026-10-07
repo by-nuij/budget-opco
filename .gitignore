@@ -1,0 +1,6 @@
+# Fichiers intermédiaires produits à chaque exécution
+travail/
+.DS_Store
+__pycache__/
+.claude/settings.local.json
+web/baremes.json

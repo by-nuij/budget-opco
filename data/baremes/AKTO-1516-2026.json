@@ -1,0 +1,52 @@
+{
+  "opco": "AKTO",
+  "annee": 2026,
+  "annee_effective_du_bareme": 2026,
+  "idcc": "1516",
+  "date_consultation": "2026-10-07",
+  "confiance": "haute",
+  "fonds_epuises": true,
+  "regles": [
+    {
+      "segment": "moins de 11 salariés",
+      "cout_horaire_max_ht": 60,
+      "plafond_par_action_ht": null,
+      "plafond_annuel_entreprise_ht": 4500,
+      "prise_en_charge_salaires": true,
+      "conditions": [
+        "Budget annuel PDC réservé aux coûts pédagogiques ; formation inter-entreprises plafonnée à 60 EUR/h/salarié formé",
+        "Formation intra-entreprise plafonnée à 1 200 EUR/jour pour 3 stagiaires minimum",
+        "Rémunération : forfait de 15 EUR/h de formation/salarié formé (hors budget pédagogique, plan conventionnel, dans les plafonds annuels)",
+        "Organisme de formation avec NDA valide et certification Qualiopi",
+        "Demandes reçues en 2026, dans la limite des fonds disponibles",
+        "ALERTE : la page indique que l'enveloppe attribuée à la branche a été intégralement engagée (suspension du financement)"
+      ],
+      "source": 1
+    },
+    {
+      "segment": "11 à 49 salariés",
+      "cout_horaire_max_ht": 60,
+      "plafond_par_action_ht": null,
+      "plafond_annuel_entreprise_ht": 5600,
+      "prise_en_charge_salaires": true,
+      "conditions": [
+        "Budget annuel PDC réservé aux coûts pédagogiques ; formation inter-entreprises plafonnée à 60 EUR/h/salarié formé",
+        "Formation intra-entreprise plafonnée à 1 200 EUR/jour pour 3 stagiaires minimum",
+        "Rémunération : forfait de 15 EUR/h de formation/salarié formé (hors budget pédagogique, plan conventionnel, dans les plafonds annuels)",
+        "Organisme de formation avec NDA valide et certification Qualiopi",
+        "Demandes reçues en 2026, dans la limite des fonds disponibles",
+        "ALERTE : la page indique que l'enveloppe attribuée à la branche a été intégralement engagée (suspension du financement)"
+      ],
+      "source": 1
+    }
+  ],
+  "sources": [
+    {
+      "id": 1,
+      "url": "https://www.akto.fr/regles-de-prise-en-charge-organisme-de-formation/",
+      "titre": "Règles de prise en charge 2026 : Organisme de formation (IDCC 1516) - site officiel AKTO",
+      "extrait": "budget annuel de 4 500€ ... 5 600€ ... plafonnés à 60€/heure de formation/salarié formé ... forfait de 15€/heure"
+    }
+  ],
+  "remarques": "Page officielle AKTO branche IDCC 1516, dispositions en vigueur à compter du 02/01/2026, mise à jour affichée 10/07/2026 (date ambigüe jj/mm ou mm/jj). FONDS ÉPUISÉS : la page affiche sous 'Suspension du financement' : 'l'enveloppe budgétaire qui a été attribuée à votre branche a été intégralement engagée'. Le budget disponible réel pour une nouvelle demande peut donc être nul : à confirmer auprès d'AKTO. Contenu lu via WebFetch (résumé automatique), citations à revérifier sur la page. Le forfait salaire de 15 EUR/h relève du plan conventionnel (prise_en_charge_salaires=true avec cette nuance). Non trouvé : plafond par action en euros (hors 1 200 EUR/jour en intra), délai précis de dépôt. Le PDF page-42682.pdf n'était pas lisible."
+}
