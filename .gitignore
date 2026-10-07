@@ -4,3 +4,4 @@ travail/
 __pycache__/
 .claude/settings.local.json
 web/baremes.json
+.netlify/
