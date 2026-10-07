@@ -1,6 +1,8 @@
 # Budget OPCO — un agent Claude Code de bout en bout
 
 > Projet de démonstration de Vincent Duchemin (Cizel), formateur IA / Claude Code agentique.
+>
+> **Démo en ligne : https://cizel-budget-opco.netlify.app**
 
 **Le problème.** Un dirigeant de TPE veut se former à l'IA, mais ne sait ni quel est son OPCO, ni
 combien celui-ci finance. Trouver la réponse demande 20 à 40 minutes de recherche : convention
